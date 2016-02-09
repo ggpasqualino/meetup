@@ -37,7 +37,8 @@ defmodule Meetup.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"},
-     {:httpoison, "~> 0.8.0"}]
+     {:httpoison, "~> 0.8.0"},
+     {:credo, "~> 0.3.0-dev2", only: :dev}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.
