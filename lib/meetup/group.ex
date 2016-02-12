@@ -3,13 +3,21 @@ defmodule Meetup.Group do
   @group_members_endpoint "https://api.meetup.com/2/profiles"
   @member_endpoint "https://api.meetup.com/members/"
 
-  def members(group, page \\ 20)
-  def members(group, page) do
+  def detailed_members(group, fields, page_size) do
+    group
+    |> members(page_size)
+    |> Enum.map(&Map.get(&1, "member_id"))
+    |> Enum.map(&to_string/1)
+    |> Enum.map(&member(group, &1, fields))
+  end
+
+  def members(group, page_size \\ 20)
+  def members(group, page_size) do
     params = %{
       group_urlname: group,
       key: @api_key,
       sign: true,
-      page: page
+      page: page_size
     }
 
     @group_members_endpoint
