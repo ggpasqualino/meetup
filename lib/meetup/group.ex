@@ -1,10 +1,10 @@
-defmodule Meetup.Members do
+defmodule Meetup.Group do
   @group_url_name "budapest-elixir"
   @api_key System.get_env("MEETUP_API_KEY")
   @endpoint "https://api.meetup.com/2/profiles"
 
-  def get(group \\ @group_url_name, page \\ 20)
-  def get(group, page) do
+  def members(group \\ @group_url_name, page \\ 20)
+  def members(group, page) do
     params = %{
       group_urlname: group,
       key: @api_key,
