@@ -17,6 +17,6 @@ defmodule Meetup.Group do
          {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> Poison.decode!(body)
          response -> {:error, "#{inspect response}"}
        end
-    |> Dict.get("results")
+    |> Map.get("results")
   end
 end
