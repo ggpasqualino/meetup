@@ -3,6 +3,7 @@ defmodule Meetup.Group do
   @group_members_endpoint "https://api.meetup.com/2/profiles"
   @member_endpoint "https://api.meetup.com/members/"
 
+  @spec detailed_members(String.t, list(String.t), number) :: map
   def detailed_members(group, fields, page_size) do
     group
     |> members(page_size)
@@ -11,6 +12,7 @@ defmodule Meetup.Group do
     |> Enum.map(&member(group, &1, fields))
   end
 
+  @spec members(String.t, number) :: list(map)
   def members(group, page_size \\ 20)
   def members(group, page_size) do
     params = %{
@@ -26,6 +28,7 @@ defmodule Meetup.Group do
     |> Map.get("results")
   end
 
+  @spec member(String.t, String.t, list(String.t)) :: map
   def member(group, member_id, extra_fields \\ ["memberships", "topics"])
   def member(group, member_id, extra_fields) do
     params = %{
