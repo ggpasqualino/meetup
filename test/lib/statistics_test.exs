@@ -4,7 +4,8 @@ defmodule Meetup.StatisticsTest do
   test "topics histogram" do
     member1 = %{"topics" => [%{"name" => "topic 1"}, %{"name" => "topic 2"}]}
     member2 = %{"topics" => [%{"name" => "topic 2"}, %{"name" => "topic 3"}]}
-    members = [member1, member2]
+    member3 = %{}
+    members = [member1, member2, member3]
     statistics = Meetup.Statistics.topics_histogram(members)
 
     assert statistics["topic 1"] == 1
