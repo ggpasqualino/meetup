@@ -38,7 +38,8 @@ defmodule Meetup.Group do
       fields: Enum.join(extra_fields, ",")
     }
 
-    @member_endpoint <> member_id
+    @member_endpoint
+    |> Kernel.<>(member_id)
     |> HTTPoison.get([], params: params )
     |> handle_response
   end
