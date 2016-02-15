@@ -12,6 +12,17 @@ defmodule Meetup.Group do
     |> Enum.map(&member(group, &1, fields))
   end
 
+  @spec detailed_members(String.t, list(String.t), number) :: map
+  def detailed_members_parallel(group, fields, page_size) do
+    group
+    |> members(page_size)
+    |> Enum.map(fn m ->
+      member_id = m |> Map.get("member_id") |> to_string
+      Task.async(fn -> member(group, member_id, fields) end)
+    end)
+    |> Enum.map(&Task.await/1)
+  end
+
   @spec members(String.t, number) :: list(map)
   def members(group, page_size \\ 20)
   def members(group, page_size) do

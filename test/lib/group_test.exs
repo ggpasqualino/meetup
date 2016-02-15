@@ -46,4 +46,15 @@ defmodule Meetup.GroupTest do
     assert "topics" in attributes
     assert "memberships" in attributes
   end
+
+  test "parallel detailed member has basic attributes" do
+    [member] = Meetup.Group.detailed_members_parallel("budapest-elixir", ["memberships", "topics"], _page_size = 1)
+
+    attributes = Map.keys(member)
+
+    assert "id" in attributes
+    assert "name" in attributes
+    assert "topics" in attributes
+    assert "memberships" in attributes
+  end
 end
