@@ -34,6 +34,7 @@ defmodule Meetup.StatisticsTest do
     }}
     member3 = %{
       "memberships" => %{
+      "organizer" => [],
       "member" => [%{
         "group" => %{"name" => "member"}
       }]

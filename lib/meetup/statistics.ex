@@ -16,7 +16,7 @@ defmodule Meetup.Statistics do
   end
 
   defp is_organizer(member) do
-    not is_nil(get_in(member, ["memberships", "organizer"]))
+    length(get_in(member, ["memberships", "organizer"])) > 0
   end
 
   @spec groups_histogram(list(map)) :: map
