@@ -1,0 +1,6 @@
+<h2>Edit member</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: member_path(@conn, :update, @member) %>
+
+<%= link "Back", to: member_path(@conn, :index) %>

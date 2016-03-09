@@ -1,0 +1,28 @@
+<h2>Listing members</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Remote</th>
+      <th>Name</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for member <- @members do %>
+    <tr>
+      <td><%= member.remote_id %></td>
+      <td><%= member.name %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: member_path(@conn, :show, member), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: member_path(@conn, :edit, member), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: member_path(@conn, :delete, member), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New member", to: member_path(@conn, :new) %>

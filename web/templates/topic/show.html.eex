@@ -1,0 +1,22 @@
+<h2>Show topic</h2>
+
+<ul>
+
+  <li>
+    <strong>Remote:</strong>
+    <%= @topic.remote_id %>
+  </li>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @topic.name %>
+  </li>
+
+  <li>
+    <strong>Member:</strong>
+    <%= @topic.member_id %>
+  </li>
+</ul>
+
+<%= link "Edit", to: topic_path(@conn, :edit, @topic) %>
+<%= link "Back", to: topic_path(@conn, :index) %>
