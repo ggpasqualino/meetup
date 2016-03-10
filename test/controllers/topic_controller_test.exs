@@ -2,7 +2,8 @@ defmodule Meetup.TopicControllerTest do
   use Meetup.ConnCase
 
   alias Meetup.Topic
-  @valid_attrs %{name: "some content", remote_id: "some content"}
+  alias Meetup.Member
+  @valid_attrs %{name: "some content", remote_id: "some content", member_id: 1}
   @invalid_attrs %{}
 
   test "lists all entries on index", %{conn: conn} do
@@ -16,9 +17,11 @@ defmodule Meetup.TopicControllerTest do
   end
 
   test "creates resource and redirects when data is valid", %{conn: conn} do
-    conn = post conn, topic_path(conn, :create), topic: @valid_attrs
+    member = Repo.insert!(%Member{})
+    valid_attrs = %{@valid_attrs | member_id: member.id}
+    conn = post conn, topic_path(conn, :create), topic: valid_attrs
     assert redirected_to(conn) == topic_path(conn, :index)
-    assert Repo.get_by(Topic, @valid_attrs)
+    assert Repo.get_by(Topic, valid_attrs)
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -46,9 +49,11 @@ defmodule Meetup.TopicControllerTest do
 
   test "updates chosen resource and redirects when data is valid", %{conn: conn} do
     topic = Repo.insert! %Topic{}
-    conn = put conn, topic_path(conn, :update, topic), topic: @valid_attrs
+    member = Repo.insert!(%Member{})
+    valid_attrs = %{@valid_attrs | member_id: member.id}
+    conn = put conn, topic_path(conn, :update, topic), topic: valid_attrs
     assert redirected_to(conn) == topic_path(conn, :show, topic)
-    assert Repo.get_by(Topic, @valid_attrs)
+    assert Repo.get_by(Topic, valid_attrs)
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do

@@ -3,7 +3,7 @@ defmodule Meetup.MembershipTest do
 
   alias Meetup.Membership
 
-  @valid_attrs %{group_name: "some content", organizer: true, remote_id: "some content"}
+  @valid_attrs %{group_name: "some content", organizer: true, remote_id: "some content", member_id: 1}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

@@ -3,7 +3,7 @@ defmodule Meetup.TopicTest do
 
   alias Meetup.Topic
 
-  @valid_attrs %{name: "some content", remote_id: "some content"}
+  @valid_attrs %{name: "some content", remote_id: "some content", member_id: 1}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
