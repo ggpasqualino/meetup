@@ -1,10 +1,23 @@
 defmodule Meetup.StatisticsTest do
   use ExUnit.Case, async: true
 
-  test "topics histogram" do
-    member1 = %{"topics" => [%{"name" => "topic 1"}, %{"name" => "topic 2"}]}
-    member2 = %{"topics" => [%{"name" => "topic 2"}, %{"name" => "topic 3"}]}
-    member3 = %{}
+  alias Meetup.Topic
+  alias Meetup.Member
+  alias Meetup.Repo
+
+  setup do
+    member1 = Repo.insert!(%Member{name: "member 1", remote_id: "1"})
+    member2 = Repo.insert!(%Member{name: "member 2", remote_id: "2"})
+    member3 = Repo.insert!(%Member{name: "member 3", remote_id: "3"})
+    {:ok, [member1: member1, member2: member2, member3: member3]}
+  end
+
+  test "topics histogram", %{member1: member1, member2: member2, member3: member3} do
+    Repo.insert!(%Topic{name: "topic 1", remote_id: "1", member_id: member1.id})
+    Repo.insert!(%Topic{name: "topic 2", remote_id: "2", member_id: member1.id})
+    Repo.insert!(%Topic{name: "topic 2", remote_id: "2", member_id: member2.id})
+    Repo.insert!(%Topic{name: "topic 3", remote_id: "3", member_id: member2.id})
+
     members = [member1, member2, member3]
     statistics = Meetup.Statistics.topics_histogram(members)
 
@@ -13,32 +26,13 @@ defmodule Meetup.StatisticsTest do
     assert statistics["topic 3"] == 1
   end
 
-  test "organizers" do
-    member1 = %{
-      "memberships" => %{
-      "organizer" => [%{
-        "group" => %{"name" => "organizer 1"}
-      }],
-      "member" => [%{
-        "group" => %{"name" => "member"}
-      }]
-    }}
-    member2 = %{
-      "memberships" => %{
-      "organizer" => [%{
-        "group" => %{"name" => "organizer 2"}
-      }],
-      "member" => [%{
-        "group" => %{"name" => "member"}
-      }]
-    }}
-    member3 = %{
-      "memberships" => %{
-      "organizer" => [],
-      "member" => [%{
-        "group" => %{"name" => "member"}
-      }]
-    }}
+  test "organizers", %{member1: member1, member2: member2, member3: member3} do
+    Repo.insert!(%Meetup.Membership{group_name: "member", remote_id: "1", organizer: false, member_id: member1.id})
+    Repo.insert!(%Meetup.Membership{group_name: "member", remote_id: "1", organizer: false, member_id: member2.id})
+    Repo.insert!(%Meetup.Membership{group_name: "member", remote_id: "1", organizer: false, member_id: member3.id})
+    Repo.insert!(%Meetup.Membership{group_name: "organizer 1", remote_id: "2", organizer: true, member_id: member1.id})
+    Repo.insert!(%Meetup.Membership{group_name: "organizer 2", remote_id: "3", organizer: true, member_id: member2.id})
+
     members = [member1, member2, member3]
     statistics = Meetup.Statistics.organizers(members)
 
@@ -46,31 +40,13 @@ defmodule Meetup.StatisticsTest do
     assert statistics["organizer"] == 2
   end
 
-  test "groups histogram" do
-    member1 = %{
-      "memberships" => %{
-      "organizer" => [%{
-        "group" => %{"name" => "organizer 1"}
-      }],
-      "member" => [%{
-        "group" => %{"name" => "member"}
-      }]
-    }}
-    member2 = %{
-      "memberships" => %{
-      "organizer" => [%{
-        "group" => %{"name" => "organizer 2"}
-      }],
-      "member" => [%{
-        "group" => %{"name" => "member"}
-      }]
-    }}
-    member3 = %{
-      "memberships" => %{
-      "member" => [%{
-        "group" => %{"name" => "member"}
-      }]
-    }}
+  test "groups histogram", %{member1: member1, member2: member2, member3: member3} do
+    Repo.insert!(%Meetup.Membership{group_name: "member", remote_id: "1", organizer: false, member_id: member1.id})
+    Repo.insert!(%Meetup.Membership{group_name: "member", remote_id: "1", organizer: false, member_id: member2.id})
+    Repo.insert!(%Meetup.Membership{group_name: "member", remote_id: "1", organizer: false, member_id: member3.id})
+    Repo.insert!(%Meetup.Membership{group_name: "organizer 1", remote_id: "2", organizer: true, member_id: member1.id})
+    Repo.insert!(%Meetup.Membership{group_name: "organizer 2", remote_id: "3", organizer: true, member_id: member2.id})
+
     members = [member1, member2, member3]
     statistics = Meetup.Statistics.groups_histogram(members)
 

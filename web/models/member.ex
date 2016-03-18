@@ -4,6 +4,8 @@ defmodule Meetup.Member do
   schema "members" do
     field :remote_id, :string
     field :name, :string
+    has_many :memberships, Meetup.Membership
+    has_many :topics, Meetup.Topic
 
     timestamps
   end
