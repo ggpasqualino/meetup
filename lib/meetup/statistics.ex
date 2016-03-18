@@ -22,20 +22,15 @@ defmodule Meetup.Statistics do
     members = Enum.uniq(members)
     total = length(members)
 
-    organizer_count = Enum.count(members, &is_organizer/1)
+    memberships = assoc(members, :memberships)
+    organizer_count =
+      from m in memberships,
+      where: m.organizer == true,
+      select: count(m.member_id, :distinct)
+
+     organizer_count = Repo.one(organizer_count)
 
     %{"total" => total, "organizer" => organizer_count}
-  end
-
-  defp is_organizer(member) do
-    memberships = assoc(member, :memberships)
-
-    organizer_memberships = from memberships, where: [organizer: true]
-
-    organizer_memberships
-    |> Repo.all
-    |> Enum.empty?
-    |> Kernel.not
   end
 
   @spec groups_histogram(list(Meetup.Member.t)) :: map
