@@ -20,6 +20,9 @@ defmodule Meetup.Router do
     resources "/members", MemberController
     resources "/topics", TopicController
     resources "/memberships", MembershipController
+    get "/statistic/topics", StatisticController, :topics
+    get "/statistic/organizers", StatisticController, :organizers
+    get "/statistic/groups", StatisticController, :groups
   end
 
   # Other scopes may use custom stacks.
