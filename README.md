@@ -1,5 +1,7 @@
 # Meetup
 
+[![Deps Status](https://beta.hexfaktor.org/badge/all/github/ggpasqualino/meetup.svg)](https://beta.hexfaktor.org/github/ggpasqualino/meetup)
+
 Collect statistics about meetup groups and present them nicely.
 
 To start your Phoenix app:
