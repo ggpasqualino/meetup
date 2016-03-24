@@ -1,6 +1,8 @@
 defmodule Mix.Tasks.Meetup.Import do
   use Mix.Task
 
+  import Ecto.Query
+
   alias Meetup.Repo
   alias Meetup.Member
   alias Meetup.Topic
@@ -14,14 +16,25 @@ defmodule Mix.Tasks.Meetup.Import do
 
     Mix.shell.info "Importing #{amount} members from #{group_urlname} group from meetup.com"
 
-    members = Meetup.Group.detailed_members_parallel(group_urlname, ["memberships", "topics"], amount)
+    existing_members = Repo.all(from m in Member, select: m.remote_id)
 
-    members = Enum.map(members, &insert_member(&1))
+    Mix.shell.info "Existing members #{inspect existing_members}"
 
-    IO.inspect members
+    member_ids =
+      group_urlname
+      |> Meetup.Group.members(amount)
+      |> Enum.map(fn m -> to_string(m["member_id"]) end)
+      |> Kernel.--(existing_members)
+
+    Mix.shell.info "members to import: #{inspect member_ids}"
+
+    members = Enum.map(member_ids, &insert_member(&1, group_urlname))
   end
 
-  defp insert_member(m) do
+  defp insert_member(member_id, group_urlname) do
+    Mix.shell.info "Importing member: #{member_id}"
+
+    m = Meetup.Group.member(group_urlname, member_id)
     member = Repo.insert!(%Member{name: m["name"], remote_id: to_string(m["id"])})
     insert_organized_meetups(member, m)
     insert_member_meetups(member, m)
