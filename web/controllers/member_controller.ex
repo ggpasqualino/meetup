@@ -29,7 +29,10 @@ defmodule Meetup.MemberController do
   end
 
   def show(conn, %{"id" => id}) do
-    member = Repo.get!(Member, id)
+    member =
+      Repo.get!(Member, id)
+      |> Repo.preload(:memberships)
+      |> Repo.preload(:topics)
     render(conn, "show.html", member: member)
   end
 

@@ -3,7 +3,7 @@
 <ul>
 
   <li>
-    <strong>Remote:</strong>
+    <strong>Remote Id:</strong>
     <%= @member.remote_id %>
   </li>
 
@@ -13,6 +13,44 @@
   </li>
 
 </ul>
+
+<h3>Memberships</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Remote Id</th>
+      <th>Group name</th>
+      <th>Organizer</th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for membership <- @member.memberships do %>
+    <tr>
+      <td><%= membership.remote_id %></td>
+      <td><%= membership.group_name %></td>
+      <td><%= membership.organizer %></td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<h3>Topics</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Remote Id</th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for topic <- @member.topics do %>
+    <tr>
+      <td><%= topic.remote_id %></td>
+      <td><%= topic.name %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
 
 <%= link "Edit", to: member_path(@conn, :edit, @member) %>
 <%= link "Back", to: member_path(@conn, :index) %>
