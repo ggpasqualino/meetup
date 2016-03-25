@@ -28,7 +28,13 @@ defmodule Mix.Tasks.Meetup.Import do
 
     Mix.shell.info "members to import: #{inspect member_ids}"
 
-    members = Enum.map(member_ids, &insert_member(&1, group_urlname))
+    member_ids
+    |> Enum.map(fn id ->
+      Task.async(fn ->
+        insert_member(id, group_urlname)
+      end)
+    end)
+    |> Enum.map(&Task.await/1)
   end
 
   defp insert_member(member_id, group_urlname) do
