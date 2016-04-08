@@ -4,11 +4,10 @@ defmodule Meetup.GroupBench do
   HTTPoison.start
 
   bench "Sequential requests" do
-    Meetup.Group.detailed_members("budapest-elixir", ["topics"], 10)
+    Meetup.Group.detailed_members("budapest-elixir", ["topics"], 16)
   end
 
-  # 2.3063, 3.5651, 3.882 times faster
   bench "Parallel requests" do
-    Meetup.Group.detailed_members_parallel("budapest-elixir", ["topics"], 10)
+    Meetup.Group.detailed_members_parallel("budapest-elixir", ["topics"], 16)
   end
 end
