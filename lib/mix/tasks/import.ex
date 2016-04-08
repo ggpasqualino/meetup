@@ -3,16 +3,13 @@ defmodule Mix.Tasks.Meetup.Import do
 
   import Ecto.Query
 
-  alias Meetup.Repo
-  alias Meetup.Member
-  alias Meetup.Topic
-  alias Meetup.Membership
+  alias Meetup.{Repo, Member, Topic, Membership}
+  alias __MODULE__
 
   @shortdoc "Import members from meetup.com to the database"
 
   def run([group_urlname, amount]) do
-    HTTPoison.start
-    Repo.start_link
+   {:ok, _} = Application.ensure_all_started(:meetup)
 
     Mix.shell.info "Importing #{amount} members from #{group_urlname} group from meetup.com"
 
@@ -30,14 +27,12 @@ defmodule Mix.Tasks.Meetup.Import do
 
     member_ids
     |> Enum.map(fn id ->
-      Task.async(fn ->
-        insert_member(id, group_urlname)
-      end)
+      Task.async(Import, :insert_member, [id, group_urlname])
     end)
     |> Enum.map(&Task.await/1)
   end
 
-  defp insert_member(member_id, group_urlname) do
+  def insert_member(member_id, group_urlname) do
     Mix.shell.info "Importing member: #{member_id}"
 
     m = Meetup.Group.member(group_urlname, member_id)
