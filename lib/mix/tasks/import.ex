@@ -19,7 +19,7 @@ defmodule Mix.Tasks.Meetup.Import do
 
     member_ids =
       group_urlname
-      |> Meetup.Group.members(amount)
+      |> MeetupApi.Group.members(amount)
       |> Enum.map(fn m -> to_string(m["member_id"]) end)
       |> Kernel.--(existing_members)
 
@@ -35,7 +35,7 @@ defmodule Mix.Tasks.Meetup.Import do
   def insert_member(member_id, group_urlname) do
     Mix.shell.info "Importing member: #{member_id}"
 
-    m = Meetup.Group.member(group_urlname, member_id)
+    m = MeetupApi.Group.member(group_urlname, member_id)
     member = Repo.insert!(%Member{name: m["name"], remote_id: to_string(m["id"])})
     insert_organized_meetups(member, m)
     insert_member_meetups(member, m)

@@ -1,22 +1,22 @@
-defmodule Meetup.GroupTest do
+defmodule MeetupApi.GroupTest do
   use ExUnit.Case, async: true
 
   test "get members with default page size" do
-    members = Meetup.Group.members("budapest-elixir")
+    members = MeetupApi.Group.members("budapest-elixir")
 
     assert is_list(members)
     assert length(members) == 20
   end
 
   test "get members with page size" do
-    members = Meetup.Group.members("budapest-elixir", _page_size = 30)
+    members = MeetupApi.Group.members("budapest-elixir", _page_size = 30)
 
     assert is_list(members)
     assert length(members) == 30
   end
 
   test "member has basic attributes" do
-    [member] = Meetup.Group.members("budapest-elixir", _page_size = 1)
+    [member] = MeetupApi.Group.members("budapest-elixir", _page_size = 1)
 
     attributes = Map.keys(member)
 
@@ -26,7 +26,7 @@ defmodule Meetup.GroupTest do
   end
 
   test "get group member with default extra fields" do
-    member = Meetup.Group.member("budapest-elixir", "152928012")
+    member = MeetupApi.Group.member("budapest-elixir", "152928012")
 
     attributes = Map.keys(member)
 
@@ -37,7 +37,7 @@ defmodule Meetup.GroupTest do
   end
 
   test "detailed member has basic attributes" do
-    [member] = Meetup.Group.detailed_members("budapest-elixir", ["memberships", "topics"], _page_size = 1)
+    [member] = MeetupApi.Group.detailed_members("budapest-elixir", ["memberships", "topics"], _page_size = 1)
 
     attributes = Map.keys(member)
 
@@ -48,7 +48,7 @@ defmodule Meetup.GroupTest do
   end
 
   test "parallel detailed member has basic attributes" do
-    [member] = Meetup.Group.detailed_members_parallel("budapest-elixir", ["memberships", "topics"], _page_size = 1)
+    [member] = MeetupApi.Group.detailed_members_parallel("budapest-elixir", ["memberships", "topics"], _page_size = 1)
 
     attributes = Map.keys(member)
 

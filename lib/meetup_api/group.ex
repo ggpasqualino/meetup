@@ -1,4 +1,4 @@
-defmodule Meetup.Group do
+defmodule MeetupApi.Group do
   @api_key System.get_env("MEETUP_API_KEY")
   @group_members_endpoint "https://api.meetup.com/2/profiles"
   @member_endpoint "https://api.meetup.com/members/"
