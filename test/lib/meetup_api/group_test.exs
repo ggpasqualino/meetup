@@ -26,29 +26,7 @@ defmodule MeetupApi.GroupTest do
   end
 
   test "get group member with default extra fields" do
-    member = MeetupApi.Group.member("budapest-elixir", "152928012")
-
-    attributes = Map.keys(member)
-
-    assert "id" in attributes
-    assert "name" in attributes
-    assert "topics" in attributes
-    assert "memberships" in attributes
-  end
-
-  test "detailed member has basic attributes" do
-    [member] = MeetupApi.Group.detailed_members("budapest-elixir", ["memberships", "topics"], _page_size = 1)
-
-    attributes = Map.keys(member)
-
-    assert "id" in attributes
-    assert "name" in attributes
-    assert "topics" in attributes
-    assert "memberships" in attributes
-  end
-
-  test "parallel detailed member has basic attributes" do
-    [member] = MeetupApi.Group.detailed_members_parallel("budapest-elixir", ["memberships", "topics"], _page_size = 1)
+    member = MeetupApi.V3.Profile.one("budapest-elixir", "152928012")
 
     attributes = Map.keys(member)
 

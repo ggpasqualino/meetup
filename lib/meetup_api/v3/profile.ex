@@ -1,21 +1,20 @@
-defmodule MeetupApi.Group do
+defmodule MeetupApi.V3.Profile do
   @api_key System.get_env("MEETUP_API_KEY")
-  @group_members_endpoint "https://api.meetup.com/2/profiles"
+  @member_endpoint "https://api.meetup.com/members/"
 
-  @spec members(String.t, number) :: list(map)
-  def members(group, page_size \\ 20)
-  def members(group, page_size) do
+  @spec one(String.t, String.t, list(String.t)) :: map
+  def one(group, member_id, extra_fields \\ ["memberships", "topics"])
+  def one(group, member_id, extra_fields) do
     params = %{
       group_urlname: group,
       key: @api_key,
-      sign: true,
-      page: page_size
+      fields: Enum.join(extra_fields, ",")
     }
 
-    @group_members_endpoint
+    @member_endpoint
+    |> Kernel.<>(member_id)
     |> HTTPoison.get([], params: params )
     |> handle_response
-    |> Map.get("results")
   end
 
   defp handle_response({:ok, response}) do
