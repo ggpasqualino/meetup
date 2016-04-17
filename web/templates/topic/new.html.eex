@@ -1,7 +1,0 @@
-<h2>New topic</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: topic_path(@conn, :create),
-                        members: @members %>
-
-<%= link "Back", to: topic_path(@conn, :index) %>

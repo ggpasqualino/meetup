@@ -10,7 +10,7 @@ defmodule Meetup do
       # Start the endpoint when the application starts
       supervisor(Meetup.Endpoint, []),
       # Start the Ecto repository
-      supervisor(Meetup.Repo, []),
+      # supervisor(Meetup.Repo, []),
       # Here you could define other workers and supervisors as children
       # worker(Meetup.Worker, [arg1, arg2, arg3]),
     ]
