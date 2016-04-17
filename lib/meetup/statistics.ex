@@ -1,48 +1,34 @@
-import Ecto
-import Ecto.Query
-
-alias Meetup.Repo
-
 defmodule Meetup.Statistics do
-  @spec topics_histogram(list(Meetup.Member.t)) :: map
+  @spec topics_histogram(list(map)) :: map
   def topics_histogram(members) do
-    topics = assoc(members, :topics)
-
-    count_querry = from t in topics,
-      group_by: t.name,
-      select: {t.name, count(t.remote_id)}
-
-    count_querry
-    |> Repo.all
-    |> Enum.into(%{})
+    members
+    |> Enum.flat_map(&Map.get(&1, "topics", []))
+    |> Enum.group_by(&(&1["name"]))
+    |> Enum.into(%{}, fn {k, v} -> {k, length(v)} end)
   end
 
-  @spec organizers(list(Meetup.Member.t)) :: map
+  @spec organizers(list(map)) :: map
   def organizers(members) do
-    members = Enum.uniq(members)
     total = length(members)
-
-    memberships = assoc(members, :memberships)
-    organizer_count =
-      from m in memberships,
-      where: m.organizer == true,
-      select: count(m.member_id, :distinct)
-
-     organizer_count = Repo.one(organizer_count)
+    organizer_count = Enum.count(members, &is_organizer/1)
 
     %{"total" => total, "organizer" => organizer_count}
   end
 
-  @spec groups_histogram(list(Meetup.Member.t)) :: map
+  defp is_organizer(member) do
+    length(get_in(member, ["memberships", "organizer"])) > 0
+  end
+
+  @spec groups_histogram(list(map)) :: map
   def groups_histogram(members) do
-    memberships = assoc(members, :memberships)
+    members
+    |> Enum.flat_map(&join_groups/1)
+    |> Enum.group_by(&get_in(&1, ["group", "name"]))
+    |> Enum.into(%{}, fn {k, v} -> {k, length(v)} end)
+  end
 
-    count_querry = from m in memberships,
-      group_by: m.group_name,
-      select: {m.group_name, count(m.remote_id)}
-
-    count_querry
-    |> Repo.all
-    |> Enum.into(%{})
+  defp join_groups(member) do
+    memberships = Map.get(member, "memberships", %{})
+    Map.get(memberships, "organizer", []) ++ Map.get(memberships, "member", [])
   end
 end
