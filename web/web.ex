@@ -51,9 +51,6 @@ defmodule Meetup.Web do
     quote do
       use Phoenix.Channel
 
-      alias Meetup.Repo
-      import Ecto
-      import Ecto.Query, only: [from: 1, from: 2]
       import Meetup.Gettext
     end
   end
