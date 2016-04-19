@@ -2,7 +2,7 @@ defmodule MeetupApi.V3.ProfileTest do
   use ExUnit.Case, async: true
 
   test "get group member with default extra fields" do
-    {:ok, %{result: member}} = MeetupApi.V3.Profile.one("budapest-elixir", "152928012")
+    {:ok, %{result: member}} = MeetupApi.V3.Profile.one("152928012")
 
     attributes = Map.keys(member)
 

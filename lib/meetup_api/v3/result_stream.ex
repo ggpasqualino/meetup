@@ -1,5 +1,5 @@
 defmodule MeetupApi.V3.ResultStream do
-  alias MeetupApi.V3.Profile
+  alias MeetupApi.V3.Api
 
   @spec new(String.t) :: Stream.t
   def new(first_page_url) do
@@ -14,7 +14,7 @@ defmodule MeetupApi.V3.ResultStream do
   end
 
   defp fetch_page(url) do
-    {:ok, %{meta: meta, result: result}} = Profile.get(url)
+    {:ok, %{meta: meta, result: result}} = Api.get(url)
 
     {result, get_in(meta, ["Link", "next"])}
   end
