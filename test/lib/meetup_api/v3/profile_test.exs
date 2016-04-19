@@ -2,7 +2,7 @@ defmodule MeetupApi.V3.ProfileTest do
   use ExUnit.Case, async: true
 
   test "get group member with default extra fields" do
-    {:ok, member} = MeetupApi.V3.Profile.one("budapest-elixir", "152928012")
+    {:ok, %{result: member}} = MeetupApi.V3.Profile.one("budapest-elixir", "152928012")
 
     attributes = Map.keys(member)
 
@@ -12,23 +12,15 @@ defmodule MeetupApi.V3.ProfileTest do
     assert "memberships" in attributes
   end
 
-  test "get members with default page size" do
-    {:ok, members} = MeetupApi.V3.Profile.all("budapest-elixir")
+  test "get all members" do
+    members_stream = MeetupApi.V3.Profile.all("budapest-elixir")
 
-    assert is_list(members)
-    assert length(members) == 20
-  end
-
-  test "get members with page size" do
-    {:ok, members} = MeetupApi.V3.Profile.all("budapest-elixir", _page_size = 30)
-
-    assert is_list(members)
-    assert length(members) == 30
+    assert Enum.count(members_stream) == 97
   end
 
   test "member has basic attributes" do
-    {:ok, [member]} = MeetupApi.V3.Profile.all("budapest-elixir", _page_size = 1)
-
+    members_stream = MeetupApi.V3.Profile.all("budapest-elixir")
+    [member] = members_stream |> Stream.take(1) |> Enum.to_list
     attributes = Map.keys(member)
 
     assert "group_profile" in attributes

@@ -6,10 +6,10 @@ defmodule MeetupApi.V3.Profile do
   def all(group) do
     group
     |> first_page_url
-    |> MeetupApi.V3.Profile.ResultStream.new
+    |> MeetupApi.V3.ResultStream.new
   end
 
-  def fetch_page(url) do
+  def get(url) do
     url
     |> HTTPoison.get
     |> handle_response
@@ -58,6 +58,11 @@ defmodule MeetupApi.V3.Profile do
     end)
   end
 
+  defp parse_links(_) do
+    %{}
+  end
+
+
   def first_page_url(group) do
     params =
       %{
@@ -68,25 +73,5 @@ defmodule MeetupApi.V3.Profile do
       }
 
     "#{@endpoint}/#{group}/members?#{URI.encode_query(params)}"
-  end
-
-  defmodule ResultStream do
-    alias MeetupApi.V3.Profile
-
-    def new(first_page_url) do
-      Stream.resource(
-        fn -> first_page_url end,
-        &fetch_page/1,
-        fn _ -> end)
-    end
-
-    def fetch_page(nil) do
-      {:halt, nil}
-    end
-
-    def fetch_page(url) do
-      {:ok, %{meta: meta, result: result}} = Profile.fetch_page(url)
-      {result, get_in(meta, ["Link", "next"])}
-    end
   end
 end
