@@ -37,7 +37,8 @@ defmodule Meetup.Mixfile do
      {:cowboy, "~> 1.0"},
      {:httpoison, "~> 0.8.0"},
      {:credo, "~> 0.3.0-dev2", only: :dev},
-     {:benchfella, "~> 0.3.1", only: :dev}]
+     {:benchfella, "~> 0.3.1", only: :dev},
+     {:mock, "~> 0.1.3", only: :test}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.
