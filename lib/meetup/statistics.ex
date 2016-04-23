@@ -9,7 +9,7 @@ defmodule Meetup.Statistics do
 
   @spec organizers(list(map)) :: map
   def organizers(members) do
-    total = length(members)
+    total = Enum.count(members)
     organizer_count = Enum.count(members, &is_organizer/1)
 
     %{"total" => total, "organizer" => organizer_count}
