@@ -24,6 +24,8 @@ defmodule MeetupApi.V3.Profile do
       fields: Enum.join(extra_fields, ",")
     }
 
-    Api.get("/members/#{member_id}", params)
+    "/members/#{member_id}"
+    |> Api.build_url(params)
+    |> Api.get
   end
 end

@@ -6,15 +6,9 @@ defmodule MeetupApi.V3.Api do
 
   def endpoint, do: @endpoint
 
-  def get(path, params) do
-    path
-    |> build_url(params)
-    |> get
-  end
-
-  def get(url) do
+  def get(url, request \\ &HTTPoison.get/1)  do
     url
-    |> HTTPoison.get
+    |> request.()
     |> handle_response
   end
 
