@@ -1,42 +1,32 @@
 defmodule MeetupApi.V3.ResultStreamTest do
   use ExUnit.Case, async: false
 
-  alias MeetupApi.V3.{Api, ResultStream}
-  import Mock
+  alias MeetupApi.V3.{ResultStream}
 
   test ".new returns a new ResultStream" do
     assert is_function ResultStream.new("/budapest-elixir/members?page=1&offset=0")
   end
 
   test "can return all results" do
-    url = "/budapest-elixir/members?page=1&offset=0"
-    with_fixture fn ->
-      expected = [%{"name" => "one"}, %{"name" => "two"}]
-      actual =
-        url
-        |> ResultStream.new
-        |> Enum.to_list
-
-      assert actual == expected
+    fetcher_mock = fn url ->
+      if String.match?(url, ~r/.*offset=0.*/) do
+        first_page
+      else
+        last_page
+      end
     end
+
+    actual =
+      "/budapest-elixir/members?page=1&offset=0"
+      |> ResultStream.new(fetcher_mock)
+      |> Enum.to_list
+
+    expected = [%{"name" => "one"}, %{"name" => "two"}]
+
+    assert actual == expected
   end
 
-  defp with_fixture(fun) do
-    stub = {:get,
-            fn url ->
-              if String.match?(url, ~r/.*offset=0.*/) do
-                offset0
-              else
-                offset1
-              end
-            end}
-
-    with_mock Api, [stub] do
-      fun.()
-    end
-  end
-
-  defp offset0 do
+  defp first_page do
     {
       :ok,
       %{
@@ -46,7 +36,7 @@ defmodule MeetupApi.V3.ResultStreamTest do
     }
   end
 
-  defp offset1 do
+  defp last_page do
     {
       :ok,
       %{
