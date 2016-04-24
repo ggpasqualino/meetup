@@ -9,21 +9,24 @@ defmodule Meetup.Router do
     plug :put_secure_browser_headers
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
   scope "/", Meetup do
-    pipe_through :browser # Use the default browser stack
+    pipe_through :browser
 
     get "/", PageController, :index
-    get "/statistic/topics", StatisticController, :topics
-    get "/statistic/organizers", StatisticController, :organizers
-    get "/statistic/groups", StatisticController, :groups
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", Meetup do
-  #   pipe_through :api
-  # end
+  scope "/statistic", Meetup do
+    pipe_through :browser
+
+    get "/topics", StatisticController, :topics
+    get "/organizers", StatisticController, :organizers
+    get "/groups", StatisticController, :groups
+  end
+
+  scope "/auth", Meetup do
+    pipe_through :browser
+
+    get "/meetup", AuthController, :index
+    get "/meetup/callback", AuthController, :callback
+  end
 end

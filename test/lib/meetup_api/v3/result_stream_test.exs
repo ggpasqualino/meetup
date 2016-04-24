@@ -1,5 +1,5 @@
 defmodule MeetupApi.V3.ResultStreamTest do
-  use ExUnit.Case, async: false
+  use ExUnit.Case, async: true
 
   alias MeetupApi.V3.{ResultStream}
 

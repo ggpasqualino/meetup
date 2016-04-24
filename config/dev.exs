@@ -31,3 +31,6 @@ config :logger, :console, format: "[$level] $message\n"
 # Do not configure such in production as keeping
 # and calculating stacktraces is usually expensive.
 config :phoenix, :stacktrace_depth, 20
+
+config :meetup, :oauth,
+  redirect_uri: "http://localhost:4000/auth/meetup/callback"

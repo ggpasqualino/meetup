@@ -1,5 +1,5 @@
 defmodule MeetupApi.V3.ApiTest do
-  use ExUnit.Case, async: false
+  use ExUnit.Case, async: true
 
   alias MeetupApi.V3.Api
 
