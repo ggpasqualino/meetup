@@ -1,8 +1,8 @@
 defmodule MeetupApi.V3.Api do
-  @api_key System.get_env("MEETUP_API_KEY")
+  @key Application.get_env(:meetup, :api_key)
   @endpoint "https://api.meetup.com"
 
-  def key, do: @api_key
+  def key, do: @key
 
   def endpoint, do: @endpoint
 

@@ -11,6 +11,8 @@
   "idna": {:hex, :idna, "1.2.0"},
   "metrics": {:hex, :metrics, "1.0.1"},
   "mimerl": {:hex, :mimerl, "1.0.2"},
+  "mimetype_parser": {:hex, :mimetype_parser, "0.1.2"},
+  "oauth2": {:hex, :oauth2, "0.6.0"},
   "phoenix": {:hex, :phoenix, "1.1.4"},
   "phoenix_html": {:hex, :phoenix_html, "2.5.1"},
   "phoenix_live_reload": {:hex, :phoenix_live_reload, "1.0.3"},
