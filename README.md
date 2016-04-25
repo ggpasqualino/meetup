@@ -1,7 +1,8 @@
 # Meet the Meetup
-## A project to help meetup organizers to understand the members of their Meetup.com groups
 
 [![Deps Status](https://beta.hexfaktor.org/badge/all/github/ggpasqualino/meetup.svg)](https://beta.hexfaktor.org/github/ggpasqualino/meetup)
+
+A project to help meetup organizers to understand the members of their Meetup.com groups
 
 API Authentication:
   * Create a Meetup.com OAuth consumer at https://secure.meetup.com/meetup_api/oauth_consumers/
