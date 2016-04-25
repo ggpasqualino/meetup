@@ -1,18 +1,20 @@
-# Meetup
+# Meet the Meetup
+## A project to help meetup organizers to understand the members of their Meetup.com groups
 
 [![Deps Status](https://beta.hexfaktor.org/badge/all/github/ggpasqualino/meetup.svg)](https://beta.hexfaktor.org/github/ggpasqualino/meetup)
 
-Collect statistics about meetup groups and present them nicely.
-
-API Key:
-  * Get your key at https://secure.meetup.com/meetup_api/key/
-  * Export it to your environment with `export MEETUP_API_KEY=[your-key]`
+API Authentication:
+  * Create a Meetup.com OAuth consumer at https://secure.meetup.com/meetup_api/oauth_consumers/
+  * Export the values of `Key`, `Secret` and `Redirect URI` to your environment
+   
+   ```bash
+   export MEETUP_CLIENT_ID=[Key]
+   export MEETUP_CLIENT_SECRET=[Secret]
+   export MEETUP_REDIRECT_URI=[Redirect URI]
+   ```
 
 To start your Phoenix app:
 
   * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
   * Install Node.js dependencies with `npm install`
   * Start Phoenix endpoint with `mix phoenix.server`
-
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
