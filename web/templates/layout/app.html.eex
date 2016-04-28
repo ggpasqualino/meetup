@@ -7,21 +7,36 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello Budapest |> Elixir!</title>
+    <title>Meet the Meetup</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
-    <div class="container">
-      <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-          </ul>
-        </nav>
-        <span class="logo"></span>
-      </header>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href=<%= page_path(@conn, :index) %> >
+            Home
+          </a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+          <%= if @access_token do %>
+            <li>
+              <%= link "Stats", to: statistic_path(@conn, :index) %>
+            </li>
+            <li>
+              <%= link "Log out", to: session_path(@conn, :delete), class: "btn" %>
+            </li>
+          <% else %>
+            <li>
+              <%= link "Log in", to: session_path(@conn, :create), class: "btn" %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
 
+    <div class="container">
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 

@@ -4,8 +4,15 @@ defmodule Meetup.StatisticController do
   alias Meetup.Statistics
   alias MeetupApi.V3.Profile
 
+  plug :authenticate_user
+
+  def index(conn, _params) do
+    user = get_session(conn, :current_user)
+    render(conn, "index.html", user: user)
+  end
+
   def topics(conn, %{"group" => group}) do
-    token = get_session(conn, :access_token)
+    token = conn.assigns.access_token
 
     member_topics =
       group
@@ -17,7 +24,7 @@ defmodule Meetup.StatisticController do
   end
 
   def organizers(conn, %{"group" => group}) do
-    token = get_session(conn, :access_token)
+    token = conn.assigns.access_token
 
     organizer_members =
       group
@@ -28,7 +35,7 @@ defmodule Meetup.StatisticController do
   end
 
   def groups(conn, %{"group" => group}) do
-    token = get_session(conn, :access_token)
+    token = conn.assigns.access_token
 
     member_groups =
       group

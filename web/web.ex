@@ -22,6 +22,8 @@ defmodule Meetup.Web do
 
       import Meetup.Router.Helpers
       import Meetup.Gettext
+
+      import Meetup.Auth, only: [authenticate_user: 2]
     end
   end
 

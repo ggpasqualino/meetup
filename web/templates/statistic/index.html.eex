@@ -1,0 +1,24 @@
+<h2><%= @user.name %></h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Group</th>
+      <th>Stats</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for group <- @user.groups do %>
+      <tr>
+        <td>
+          <%= link group, to: "https://meetup.com/#{group}" %>
+        </td>
+        <td>
+          <%= link "Topics", to: statistic_path(@conn, :topics, group) %>
+          <%= link "Groups", to: statistic_path(@conn, :groups, group) %>
+          <%= link "Organizers", to: statistic_path(@conn, :organizers, group) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -7,6 +7,7 @@ defmodule Meetup.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug Meetup.Auth
   end
 
   scope "/", Meetup do
@@ -15,18 +16,20 @@ defmodule Meetup.Router do
     get "/", PageController, :index
   end
 
-  scope "/statistic", Meetup do
+  scope "/stats", Meetup do
     pipe_through :browser
 
-    get "/topics", StatisticController, :topics
-    get "/organizers", StatisticController, :organizers
-    get "/groups", StatisticController, :groups
+    get "/index", StatisticController, :index
+    get "/:group/topic", StatisticController, :topics
+    get "/:group/organizer", StatisticController, :organizers
+    get "/:group/group", StatisticController, :groups
   end
 
   scope "/auth", Meetup do
     pipe_through :browser
 
-    get "/meetup", AuthController, :index
-    get "/meetup/callback", AuthController, :callback
+    get "/meetup", SessionController, :create
+    get "/meetup/callback", SessionController, :callback
+    get "/meetup/delete", SessionController, :delete
   end
 end
