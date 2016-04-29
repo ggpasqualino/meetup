@@ -12,13 +12,26 @@ defmodule Meetup.Auth do
   end
 
   def authenticate_user(conn, _opts) do
-    if conn.assigns.access_token do
-      conn
+    token = conn.assigns.access_token
+    if token do
+      validate_token(token, conn)
     else
       conn
       |> put_flash(:error, "You must be logged in to access that page")
       |> redirect(to: Helpers.page_path(conn, :index))
       |> halt
+    end
+  end
+
+  def validate_token(token, conn) do
+    if MeetupApi.V3.OAuth.token_expired?(token) do
+      conn
+      |> logout
+      |> put_flash(:error, "Session expired!")
+      |> redirect(to: Helpers.page_path(conn, :index))
+      |> halt
+    else
+      conn
     end
   end
 
@@ -30,6 +43,8 @@ defmodule Meetup.Auth do
   end
 
   def logout(conn) do
-    configure_session(conn, drop: true)
+    conn
+    |> delete_session(:current_user)
+    |> delete_session(:access_token)
   end
 end

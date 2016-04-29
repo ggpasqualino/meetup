@@ -11,7 +11,7 @@ defmodule Meetup.SessionController do
     token = OAuth.get_token!(code: code)
 
     conn
-    |> Meetup.Auth.login(token.access_token, user(token.access_token))
+    |> Meetup.Auth.login(token, user(token.access_token))
     |> put_flash(:info, "Welcome!")
     |> redirect(to: page_path(conn, :index))
   end

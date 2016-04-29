@@ -27,6 +27,10 @@ defmodule MeetupApi.V3.OAuth do
     OAuth2.Client.get_token!(client(), params, headers, options)
   end
 
+  def token_expired?(token) do
+    OAuth2.AccessToken.expired?(token)
+  end
+
   # Strategy Callbacks
 
   def authorize_url(oauth_client, params) do

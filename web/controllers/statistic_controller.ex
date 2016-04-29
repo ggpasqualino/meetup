@@ -12,7 +12,7 @@ defmodule Meetup.StatisticController do
   end
 
   def topics(conn, %{"group" => group}) do
-    token = conn.assigns.access_token
+    token = conn.assigns.access_token.access_token
 
     member_topics =
       group
@@ -24,7 +24,7 @@ defmodule Meetup.StatisticController do
   end
 
   def organizers(conn, %{"group" => group}) do
-    token = conn.assigns.access_token
+    token = conn.assigns.access_token.access_token
 
     organizer_members =
       group
@@ -35,7 +35,7 @@ defmodule Meetup.StatisticController do
   end
 
   def groups(conn, %{"group" => group}) do
-    token = conn.assigns.access_token
+    token = conn.assigns.access_token.access_token
 
     member_groups =
       group
