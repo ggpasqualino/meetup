@@ -29,11 +29,11 @@ defmodule MeetupApi.V3.OAuth do
 
   # Strategy Callbacks
 
-  def authorize_url(client, params) do
-    OAuth2.Strategy.AuthCode.authorize_url(client, params)
+  def authorize_url(oauth_client, params) do
+    OAuth2.Strategy.AuthCode.authorize_url(oauth_client, params)
   end
 
-  def get_token(client, params, headers) do
-    OAuth2.Strategy.AuthCode.get_token(client, params, headers)
+  def get_token(oauth_client, params, headers) do
+    OAuth2.Strategy.AuthCode.get_token(oauth_client, params, headers)
   end
 end
