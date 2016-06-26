@@ -8,7 +8,6 @@ use Mix.Config
 # Configures the endpoint
 config :meetup, Meetup.Endpoint,
   url: [host: "localhost"],
-  root: Path.dirname(__DIR__),
   secret_key_base: "XVM6/VcNY8bAwfnl2RUR5TRhZ77AAI6nsanOsuifNY63eC6nEKoCqty9eEJ0skA4",
   render_errors: [accepts: ~w(html json)],
   pubsub: [name: Meetup.PubSub,
