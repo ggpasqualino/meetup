@@ -19,7 +19,7 @@ defmodule Meetup.Mixfile do
   def application do
     [mod: {Meetup, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :httpoison, :oauth2]]
+                    :httpoison, :oauth2, :gproc]]
   end
 
   # Specifies which paths to compile per environment.
@@ -39,7 +39,8 @@ defmodule Meetup.Mixfile do
      {:httpoison, "~> 0.9.0"},
      {:credo, "~> 0.4.5", only: :dev},
      {:benchfella, "~> 0.3.1", only: :dev},
-     {:oauth2, "~> 0.5"}]
+     {:oauth2, "~> 0.5"},
+     {:gproc, "~> 0.6.1"}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.
