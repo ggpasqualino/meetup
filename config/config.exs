@@ -30,6 +30,11 @@ config :meetup, :oauth,
 
 config :meetup, :api_key, System.get_env("MEETUP_API_KEY")
 
+config :meetup, Strangled.Server,
+  max_rate: 30,
+  time_interval: 11,
+  user_expiration_time: 3600
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
