@@ -1,4 +1,6 @@
 defmodule MeetupApi.V3.Api do
+  alias MeetupApi.V3.Request
+
   @key Application.get_env(:meetup, :api_key)
   @endpoint "https://api.meetup.com"
 
@@ -6,10 +8,28 @@ defmodule MeetupApi.V3.Api do
 
   def endpoint, do: @endpoint
 
-  def get(url, request \\ &HTTPoison.get/1)  do
+  def get(request, getter \\ &HTTPoison.get/1)
+  def get(%Request{} = request, getter) do
+    request
+    |> build_url
+    |> get
+  end
+
+  def get(url, getter)  do
     url
-    |> request.()
+    |> getter.()
     |> handle_response
+  end
+
+  def build_url(%Request{path: path, params: %Request.Params{} = params}) do
+    parsed_params =
+      params
+      |> Map.from_struct
+      |> Enum.reject(fn {k, v} -> is_nil(v) end)
+      |> Enum.into(%{})
+      |> URI.encode_query
+
+    "#{endpoint}#{path}?#{parsed_params}"
   end
 
   def build_url(path, params) do
