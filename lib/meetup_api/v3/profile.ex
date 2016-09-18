@@ -7,9 +7,10 @@ defmodule MeetupApi.V3.Profile do
     import Request, except: [new: 2]
 
     "/#{group}/members"
-    |> Request.new(access_token || Api.key)
+    |> Request.new(access_token)
     |> add_offset(0)
     |> add_page(200)
+    |> add_only("id")
     |> add_authentication(access_token)
     |> MeetupApi.V3.ResultStream.new
   end
@@ -20,7 +21,7 @@ defmodule MeetupApi.V3.Profile do
     import Request, except: [new: 2]
 
     "/members/#{member_id}"
-    |> Request.new(access_token || Api.key)
+    |> Request.new(access_token)
     |> add_fields(Enum.join(extra_fields, ","))
     |> add_authentication(access_token)
     |> Api.get

@@ -23,11 +23,8 @@ defmodule MeetupApi.V3.ProfileTest do
 
   test "member has basic attributes" do
     members_stream = MeetupApi.V3.Profile.all("budapest-elixir")
-    [member] = members_stream |> Stream.take(1) |> Enum.to_list
-    attributes = Map.keys(member)
+    [member] = members_stream |> Enum.take(1)
 
-    assert "group_profile" in attributes
-    assert "id" in attributes
-    assert "name" in attributes
+    assert %{"id" => _} = member
   end
 end
