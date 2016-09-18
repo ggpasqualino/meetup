@@ -10,6 +10,10 @@ defmodule MeetupApi.V3.Api do
 
   def get(request, getter \\ &HTTPoison.get/1)
   def get(%Request{} = request, getter) do
+    request.user
+    |> Strangled.Cache.server_process
+    |> Strangled.Server.wait_permission
+
     request
     |> build_url
     |> getter.()
