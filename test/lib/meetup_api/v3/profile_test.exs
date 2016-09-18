@@ -18,7 +18,7 @@ defmodule MeetupApi.V3.ProfileTest do
   test "get all members" do
     members_stream = MeetupApi.V3.Profile.all("budapest-elixir")
 
-    assert Enum.count(members_stream) == 98
+    assert Enum.count(members_stream) == 133
   end
 
   test "member has basic attributes" do
@@ -29,7 +29,5 @@ defmodule MeetupApi.V3.ProfileTest do
     assert "group_profile" in attributes
     assert "id" in attributes
     assert "name" in attributes
-    assert "memberships" in attributes
-    assert "topics" in attributes
   end
 end

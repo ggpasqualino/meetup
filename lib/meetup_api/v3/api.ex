@@ -12,11 +12,6 @@ defmodule MeetupApi.V3.Api do
   def get(%Request{} = request, getter) do
     request
     |> build_url
-    |> get
-  end
-
-  def get(url, getter)  do
-    url
     |> getter.()
     |> handle_response
   end
@@ -30,10 +25,6 @@ defmodule MeetupApi.V3.Api do
       |> URI.encode_query
 
     "#{endpoint}#{path}?#{parsed_params}"
-  end
-
-  def build_url(path, params) do
-    "#{endpoint}#{path}?#{URI.encode_query(params)}"
   end
 
   defp handle_response({:ok, response}) do

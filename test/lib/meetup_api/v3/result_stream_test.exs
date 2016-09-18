@@ -1,15 +1,21 @@
 defmodule MeetupApi.V3.ResultStreamTest do
   use ExUnit.Case, async: true
 
-  alias MeetupApi.V3.{ResultStream}
+  alias MeetupApi.V3.{Request, ResultStream}
 
   test ".new returns a new ResultStream" do
-    assert is_function ResultStream.new("/budapest-elixir/members?page=1&offset=0")
+    request =
+      "/budapest-elixir/members"
+      |> Request.new("user")
+      |> Request.add_page(1)
+      |> Request.add_offset(0)
+
+    assert is_function ResultStream.new(request)
   end
 
   test "can return all results" do
-    fetcher_mock = fn url ->
-      if String.match?(url, ~r/.*offset=0.*/) do
+    fetcher_mock = fn(%Request{params: params}) ->
+      if params.offset == 0 do
         first_page
       else
         last_page
@@ -17,7 +23,10 @@ defmodule MeetupApi.V3.ResultStreamTest do
     end
 
     actual =
-      "/budapest-elixir/members?page=1&offset=0"
+      "/budapest-elixir/members"
+      |> Request.new("user")
+      |> Request.add_page(1)
+      |> Request.add_offset(0)
       |> ResultStream.new(fetcher_mock)
       |> Enum.to_list
 

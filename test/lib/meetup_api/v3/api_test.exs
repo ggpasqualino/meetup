@@ -1,7 +1,7 @@
 defmodule MeetupApi.V3.ApiTest do
   use ExUnit.Case, async: true
 
-  alias MeetupApi.V3.Api
+  alias MeetupApi.V3.{Api, Request}
 
   test "can parse body and links" do
     request_mock = fn _ ->
@@ -24,7 +24,13 @@ defmodule MeetupApi.V3.ApiTest do
         }
       }
 
-    actual = Api.get("/budapest-elixir/members?page=1&offset=0", request_mock)
+    request =
+      "/budapest-elixir/members"
+      |> Request.new("user")
+      |> Request.add_page(1)
+      |> Request.add_offset(0)
+
+    actual = Api.get(request, request_mock)
 
     assert actual == expected
   end

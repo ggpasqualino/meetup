@@ -45,4 +45,21 @@ defmodule MeetupApi.V3.Request do
     new_params = %Params{params | access_token: access_token, key: nil}
     %Request{request | params: new_params}
   end
+
+  def parse(nil), do: nil
+  def parse(url) when is_binary(url) do
+    with uri <- URI.parse(url),
+         params <- URI.decode_query(uri.query),
+           path <- uri.path,
+           user <- (params["access_token"] || params["key"]) do
+      path
+      |> new(user)
+      |> add_page(params["page"])
+      |> add_offset(params["offset"])
+      |> add_fields(params["fields"])
+      |> add_only(params["only"])
+      |> add_omit(params["omit"])
+      |> add_authentication(params["access_token"])
+    end
+  end
 end
