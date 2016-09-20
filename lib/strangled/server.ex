@@ -45,7 +45,7 @@ defmodule Strangled.Server do
   end
 
   def handle_call(:request_permission, from, state) do
-    Logger.info("request_permission started, state: #{inspect state}")
+    Logger.debug("request_permission started, state: #{inspect state}")
     if permited?(state) do
       {:reply, :ok, decrease_rate(state)}
     else
@@ -54,7 +54,7 @@ defmodule Strangled.Server do
   end
 
   def handle_call(:allow?, from, state) do
-    Logger.info("allow? started, state: #{inspect state}")
+    Logger.debug("allow? started, state: #{inspect state}")
     if permited?(state) do
       {:reply, true, decrease_rate(state)}
     else
@@ -63,7 +63,7 @@ defmodule Strangled.Server do
   end
 
   def handle_info(:answer_queue, %State{time_interval: time_interval} = state) do
-    Logger.info("answer_queue started, state: #{inspect state}")
+    Logger.debug("answer_queue started, state: #{inspect state}")
     new_state = state |> answer_queue
 
     Process.send_after(self, :answer_queue, time_interval * 1000)
