@@ -9,7 +9,8 @@ defmodule Meetup do
     children = [
       # Start the endpoint when the application starts
       supervisor(Meetup.Endpoint, []),
-      supervisor(Strangled.Supervisor, [])
+      supervisor(Strangled.Supervisor, []),
+      worker(MeetupApi.V3.RequestCache, [])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
