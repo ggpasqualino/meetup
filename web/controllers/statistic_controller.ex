@@ -16,10 +16,7 @@ defmodule Meetup.StatisticController do
 
     member_topics =
       group
-      |> Profile.all(token)
-      |> Enum.map(&task(&1, token))
-      |> Enum.map(&Task.await(&1, 600_000))
-      |> Enum.map(fn {:ok, %{result: result}} -> result end)
+      |> group_members(token)
       |> Statistics.topics_histogram
       |> Enum.sort_by(fn {k, v} -> v end, &>=/2)
 
@@ -31,10 +28,7 @@ defmodule Meetup.StatisticController do
 
     organizer_members =
       group
-      |> Profile.all(token)
-      |> Enum.map(&task(&1, token))
-      |> Enum.map(&Task.await(&1, 600_000))
-      |> Enum.map(fn {:ok, %{result: result}} -> result end)
+      |> group_members(token)
       |> Statistics.organizers
 
     render(conn, "organizers.html", organizers: organizer_members)
@@ -45,17 +39,17 @@ defmodule Meetup.StatisticController do
 
     member_groups =
       group
-      |> Profile.all(token)
-      |> Enum.map(&task(&1, token))
-      |> Enum.map(&Task.await(&1, 600_000))
-      |> Enum.map(fn {:ok, %{result: result}} -> result end)
+      |> group_members(token)
       |> Statistics.groups_histogram
       |> Enum.sort_by(fn {k, v} -> v end, &>=/2)
 
     render(conn, "groups.html", groups: member_groups)
   end
 
-  defp task(%{"id" => id}, token) do
-    Task.async(fn -> Profile.one(id, token) end)
+  defp group_members(group, token) do
+    group
+      |> Profile.all(token)
+      |> Enum.map(fn(%{"id" => id}) -> Profile.one(id, token) end)
+      |> Enum.map(fn {:ok, %{result: result}} -> result end)
   end
 end
