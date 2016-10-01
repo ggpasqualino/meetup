@@ -24,7 +24,7 @@ defmodule MeetupApi.V3.Api do
     parsed_params =
       params
       |> Map.from_struct
-      |> Enum.reject(fn {k, v} -> is_nil(v) end)
+      |> Enum.reject(fn {_, v} -> is_nil(v) end)
       |> Enum.into(%{})
       |> URI.encode_query
 

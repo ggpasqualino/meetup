@@ -53,7 +53,7 @@ defmodule Strangled.Server do
     end
   end
 
-  def handle_call(:allow?, from, state) do
+  def handle_call(:allow?, _from, state) do
     Logger.debug("allow? started, state: #{inspect state}")
     if permited?(state) do
       {:reply, true, decrease_rate(state)}
