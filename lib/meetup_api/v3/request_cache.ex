@@ -18,7 +18,7 @@ defmodule MeetupApi.V3.RequestCache do
 
   defp read_cached(key) do
     case :ets.lookup(__MODULE__, key) do
-      [{^key, cached}] -> cached
+      [{^key, cached_request}] -> cached_request
       _ -> nil
     end
   end
