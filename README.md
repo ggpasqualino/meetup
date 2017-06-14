@@ -1,7 +1,8 @@
 # Meet the Meetup
 
-[![Deps Status](https://beta.hexfaktor.org/badge/all/github/ggpasqualino/meetup.svg)](https://beta.hexfaktor.org/github/ggpasqualino/meetup)
 [![Build Status](https://travis-ci.org/ggpasqualino/meetup.svg?branch=master)](https://travis-ci.org/ggpasqualino/meetup)
+[![codebeat badge](https://codebeat.co/badges/c7c5c203-0601-4ec9-85b0-cb5e23030bca)](https://codebeat.co/projects/github-com-ggpasqualino-meetup-master)
+[![Deps Status](https://beta.hexfaktor.org/badge/all/github/ggpasqualino/meetup.svg)](https://beta.hexfaktor.org/github/ggpasqualino/meetup)
 
 A project to help meetup organizers to understand the members of their Meetup.com groups
 
