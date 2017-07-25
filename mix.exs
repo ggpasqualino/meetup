@@ -9,8 +9,8 @@ defmodule Meetup.Mixfile do
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     aliases: aliases,
-     deps: deps]
+     aliases: aliases(),
+     deps: deps()]
   end
 
   # Configuration for the OTP application.
@@ -37,7 +37,7 @@ defmodule Meetup.Mixfile do
      {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"},
      {:httpoison, "~> 0.9.0"},
-     {:credo, "~> 0.4.5", only: :dev},
+     {:credo, "~> 0.4", only: :dev},
      {:oauth2, "~> 0.5"},
      {:gproc, "~> 0.6.1"}]
   end
