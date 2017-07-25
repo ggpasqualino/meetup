@@ -11,5 +11,9 @@ config :meetup, Strangled.Server,
   time_interval: 1,
   user_expiration_time: 4
 
+  config :meetup, MeetupApi.Server,
+  seconds_to_reset: 1,
+  user_expiration_time: 4
+
 # Print only warnings and errors during test
 config :logger, level: :warn

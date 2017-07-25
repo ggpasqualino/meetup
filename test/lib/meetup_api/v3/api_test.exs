@@ -9,7 +9,12 @@ defmodule MeetupApi.V3.ApiTest do
         :ok,
         %HTTPoison.Response{
           status_code: 200,
-          headers: [{"Link", "</budapest-elixir/members?page=1&offset=1>; rel=\"next\""}],
+          headers: [
+            {"X-RateLimit-Limit", "3"},
+            {"X-RateLimit-Remaining", "3"},
+            {"X-RateLimit-Reset", "1"},
+            {"Link", "</budapest-elixir/members?page=1&offset=1>; rel=\"next\""}
+            ],
           body: "[{\"name\":\"one\"}]"
         }
       }
@@ -19,7 +24,13 @@ defmodule MeetupApi.V3.ApiTest do
       {
         :ok,
         %{
-          meta: %{"Link" => %{"next" => "/budapest-elixir/members?page=1&offset=1"}},
+          meta:
+          %{
+            "X-RateLimit-Limit" => ["3"],
+            "X-RateLimit-Remaining" => ["3"],
+            "X-RateLimit-Reset" => ["1"],
+            "Link" => %{"next" => "/budapest-elixir/members?page=1&offset=1"}
+          },
           result: [%{"name" => "one"}]
         }
       }
