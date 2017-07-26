@@ -1,4 +1,5 @@
-defmodule Strangled.Supervisor do
+defmodule MeetupApi.Supervisor do
+  @moduledoc false
   use Supervisor
   require Logger
 
@@ -9,8 +10,8 @@ defmodule Strangled.Supervisor do
 
   def init(_) do
     processes = [
-      supervisor(Strangled.ServerSupervisor, []),
-      worker(Strangled.Cache, [])
+      supervisor(MeetupApi.ServerSupervisor, []),
+      worker(MeetupApi.Cache, [])
     ]
     supervise(processes, strategy: :one_for_one)
   end

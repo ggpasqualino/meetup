@@ -11,13 +11,13 @@ defmodule MeetupApi.V3.Api do
   def get(request, getter \\ &HTTPoison.get/1)
   def get(%Request{} = request, getter) do
     request.user
-    |> Strangled.Cache.server_process
-    |> Strangled.Server.wait_permission
-
-    request
-    |> build_url
-    |> getter.()
-    |> handle_response
+    |> MeetupApi.Cache.server_process
+    |> MeetupApi.Server.do_request(fn ->
+      request
+      |> build_url
+      |> getter.()
+      |> handle_response
+    end)
   end
 
   def build_url(%Request{path: path, params: %Request.Params{} = params}) do
@@ -28,7 +28,7 @@ defmodule MeetupApi.V3.Api do
       |> Enum.into(%{})
       |> URI.encode_query
 
-    "#{endpoint}#{path}?#{parsed_params}"
+    "#{endpoint()}#{path}?#{parsed_params}"
   end
 
   defp handle_response({:ok, response}) do

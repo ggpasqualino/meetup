@@ -9,7 +9,7 @@ defmodule Meetup do
     children = [
       # Start the endpoint when the application starts
       supervisor(Meetup.Endpoint, []),
-      supervisor(Strangled.Supervisor, []),
+      supervisor(MeetupApi.Supervisor, []),
       worker(MeetupApi.V3.RequestCache, [])
     ]
 

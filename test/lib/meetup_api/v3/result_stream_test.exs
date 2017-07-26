@@ -16,9 +16,9 @@ defmodule MeetupApi.V3.ResultStreamTest do
   test "can return all results" do
     fetcher_mock = fn(%Request{params: params}) ->
       if params.offset == 0 do
-        first_page
+        first_page()
       else
-        last_page
+        last_page()
       end
     end
 

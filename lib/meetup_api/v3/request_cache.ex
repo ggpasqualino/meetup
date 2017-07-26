@@ -2,7 +2,6 @@ defmodule MeetupApi.V3.RequestCache do
   use GenServer
   require Logger
 
-  @timeout Application.get_env(:meetup, Strangled.Server)[:user_expiration_time] * 1000
   @ttl 86_400_000
 
   # Client API

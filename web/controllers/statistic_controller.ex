@@ -18,7 +18,7 @@ defmodule Meetup.StatisticController do
       group
       |> group_members(token)
       |> Statistics.topics_histogram
-      |> Enum.sort_by(fn {k, v} -> v end, &>=/2)
+      |> Enum.sort_by(fn {_k, v} -> v end, &>=/2)
 
     render(conn, "topics.html", topics: member_topics)
   end
@@ -41,7 +41,7 @@ defmodule Meetup.StatisticController do
       group
       |> group_members(token)
       |> Statistics.groups_histogram
-      |> Enum.sort_by(fn {k, v} -> v end, &>=/2)
+      |> Enum.sort_by(fn {_k, v} -> v end, &>=/2)
 
     render(conn, "groups.html", groups: member_groups)
   end
