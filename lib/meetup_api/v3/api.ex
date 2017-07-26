@@ -28,7 +28,7 @@ defmodule MeetupApi.V3.Api do
       |> Enum.into(%{})
       |> URI.encode_query
 
-    "#{endpoint}#{path}?#{parsed_params}"
+    "#{endpoint()}#{path}?#{parsed_params}"
   end
 
   defp handle_response({:ok, response}) do

@@ -56,7 +56,7 @@ defmodule MeetupApi.Server do
   # Genserver callbacks
 
   def init(state) do
-    Process.send_after(self, :clean_up, @user_expiration_time)
+    Process.send_after(self(), :clean_up, @user_expiration_time)
     {:ok, state}
   end
 
@@ -83,6 +83,14 @@ defmodule MeetupApi.Server do
     {:noreply, state}
   end
 
+  def handle_info(:clean_up, state) do
+    {:stop, :normal, state}
+  end
+
+  def handle_info(_, state) do
+    {:noreply, state}
+  end
+
   defp answer_queue(%State{wait_queue: wait_queue} = state) do
     Enum.reduce_while(wait_queue, state, fn({f, request}, s) ->
       response = request.()
@@ -94,15 +102,7 @@ defmodule MeetupApi.Server do
 
   defp schedule_queue_processing(state) do
     if state.remaining == 0 do
-      Process.send_after(self, :answer_queue, state.seconds_to_reset * 1000 + 500)
+      Process.send_after(self(), :answer_queue, state.seconds_to_reset * 1000 + 500)
     end
-  end
-
-  def handle_info(:clean_up, state) do
-    {:stop, :normal, state}
-  end
-
-  def handle_info(_, state) do
-    {:noreply, state}
   end
 end
