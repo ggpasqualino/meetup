@@ -31,7 +31,7 @@ defmodule MeetupApi.Server do
     end
   end
 
-  @user_expiration_time Application.get_env(:meetup, __MODULE__)[:user_expiration_time] * 1000
+  @user_expiration_time Application.get_env(:meetup, :user_expiration_time) * 1000
 
   # Client API
 

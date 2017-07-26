@@ -6,12 +6,7 @@ config :meetup, Meetup.Endpoint,
   http: [port: 4001],
   server: false
 
-config :meetup, Strangled.Server,
-  max_rate: 1,
-  time_interval: 1,
-  user_expiration_time: 4
-
-  config :meetup, MeetupApi.Server,
+config :meetup,
   user_expiration_time: 4
 
 # Print only warnings and errors during test
