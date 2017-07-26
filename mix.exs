@@ -38,7 +38,7 @@ defmodule Meetup.Mixfile do
      {:cowboy, "~> 1.0"},
      {:httpoison, "~> 0.12.0"},
      {:credo, "~> 0.4", only: :dev},
-     {:oauth2, "~> 0.5"},
+     {:oauth2, "~> 0.9"},
      {:gproc, "~> 0.6.1"}]
   end
 

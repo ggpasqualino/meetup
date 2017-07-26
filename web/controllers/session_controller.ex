@@ -8,7 +8,7 @@ defmodule Meetup.SessionController do
   end
 
   def callback(conn, %{"code" => code}) do
-    token = OAuth.get_token!(code: code)
+    token = OAuth.get_token!(code: code).token
 
     conn
     |> Meetup.Auth.login(token, user(token.access_token))

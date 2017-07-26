@@ -17,14 +17,12 @@ defmodule MeetupApi.V3.OAuth do
     ])
   end
 
-  def authorize_url!(params \\ []) do
-    client()
-    |> put_param(:scope, "basic")
-    |> OAuth2.Client.authorize_url!(params)
+  def authorize_url! do
+    OAuth2.Client.authorize_url!(client(), scope: "basic")
   end
 
-  def get_token!(params \\ [], headers \\ [], options \\ []) do
-    OAuth2.Client.get_token!(client(), params, headers, options)
+  def get_token!(params \\ [], headers \\ [], opts \\ []) do
+    OAuth2.Client.get_token!(client(), params, headers, opts)
   end
 
   def token_expired?(token) do
@@ -33,11 +31,14 @@ defmodule MeetupApi.V3.OAuth do
 
   # Strategy Callbacks
 
-  def authorize_url(oauth_client, params) do
-    OAuth2.Strategy.AuthCode.authorize_url(oauth_client, params)
+  def authorize_url(client, params) do
+    OAuth2.Strategy.AuthCode.authorize_url(client, params)
   end
 
-  def get_token(oauth_client, params, headers) do
-    OAuth2.Strategy.AuthCode.get_token(oauth_client, params, headers)
+  def get_token(client, params, headers) do
+    client
+    |> put_param(:client_secret, client.client_secret)
+    |> put_header("accept", "application/json")
+    |> OAuth2.Strategy.AuthCode.get_token(params, headers)
   end
 end
