@@ -1,9 +1,9 @@
 function updateProgressBar(members, total_members) {
-  var value = members.length * 100 / total_members
+  var value = (members.length * 100 / total_members).toFixed(2)
   var progressBar = window.document.querySelector("div.progress-bar")
-  progressBar.setAttribute("aria-valuenow", value.toString());
-  progressBar.innerHTML = value.toString() + "%"
-  progressBar.style.width = value.toString() + "%"
+  progressBar.setAttribute("aria-valuenow", value);
+  progressBar.innerHTML = value + "%"
+  progressBar.style.width = value + "%"
 }
 
 function updateStatistics(statistic, members, total_members) {
