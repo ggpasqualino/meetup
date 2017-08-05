@@ -7,6 +7,8 @@ defmodule Meetup.UserSocket do
 
   transport :websocket, Phoenix.Transports.WebSocket, timeout: 45_000
 
+  channel "group:*", Meetup.GroupChannel
+
   def connect(%{"channel_token" => token}, socket) do
     with  {:ok, access_token} <- Token.verify(socket, "channel_token", token),
       false <- OAuth.token_expired?(access_token)
