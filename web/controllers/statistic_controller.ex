@@ -1,9 +1,6 @@
 defmodule Meetup.StatisticController do
   use Meetup.Web, :controller
 
-  alias Meetup.Statistics
-  alias MeetupApi.V3.Profile
-
   plug :authenticate_user
 
   def index(conn, _params) do
