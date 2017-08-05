@@ -9,14 +9,14 @@ defmodule Meetup.StatisticController do
   end
 
   def topics(conn, %{"group" => group}) do
-    render(conn, "statistics.html", title: "Topics", group: group, statistic: "topics")
+    render(conn, "topics.html", group: group, statistic: "topics" )
   end
 
   def organizers(conn, %{"group" => group}) do
-    render(conn, "statistics.html", title: "Organizers", group: group, statistic: "organizers")
+    render(conn, "organizers.html", group: group, statistic: "organizers")
   end
 
   def groups(conn, %{"group" => group}) do
-    render(conn, "statistics.html", title: "Groups", group: group, statistic: "groups")
+    render(conn, "groups.html", group: group, statistic: "groups")
   end
 end

@@ -1,4 +1,5 @@
-<h2><%= @title %></h2>
+<h2>Topics</h2>
+<p>The topics of interest of the members of the group "<%= @group %>"</p>
 
 <%= tag(:meta, name: "group", content: @group) %>
 <%= tag(:meta, name: "statistic", content: @statistic) %>
@@ -13,7 +14,7 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th>Amount</th>
+      <th>Number of Members</th>
     </tr>
   </thead>
   <tbody>
