@@ -1,62 +1,115 @@
-// NOTE: The contents of this file will only be executed if
-// you uncomment its entry in "web/static/js/app.js".
-
-// To use Phoenix channels, the first step is to import Socket
-// and connect at the socket path in "lib/my_app/endpoint.ex":
 import {Socket} from "phoenix"
 
-let socket = new Socket("/socket", {params: {token: window.userToken}})
-
-// When you connect, you'll often need to authenticate the client.
-// For example, imagine you have an authentication plug, `MyAuth`,
-// which authenticates the session and assigns a `:current_user`.
-// If the current user exists you can assign the user's token in
-// the connection for use in the layout.
-//
-// In your "web/router.ex":
-//
-//     pipeline :browser do
-//       ...
-//       plug MyAuth
-//       plug :put_user_token
-//     end
-//
-//     defp put_user_token(conn, _) do
-//       if current_user = conn.assigns[:current_user] do
-//         token = Phoenix.Token.sign(conn, "user socket", current_user.id)
-//         assign(conn, :user_token, token)
-//       else
-//         conn
-//       end
-//     end
-//
-// Now you need to pass this token to JavaScript. You can do so
-// inside a script tag in "web/templates/layout/app.html.eex":
-//
-//     <script>window.userToken = "<%= assigns[:user_token] %>";</script>
-//
-// You will need to verify the user token in the "connect/2" function
-// in "web/channels/user_socket.ex":
-//
-//     def connect(%{"token" => token}, socket) do
-//       # max_age: 1209600 is equivalent to two weeks in seconds
-//       case Phoenix.Token.verify(socket, "user socket", token, max_age: 1209600) do
-//         {:ok, user_id} ->
-//           {:ok, assign(socket, :user, user_id)}
-//         {:error, reason} ->
-//           :error
-//       end
-//     end
-//
-// Finally, pass the token on connect as below. Or remove it
-// from connect if you don't care about authentication.
-
+let channel_token = window.document.querySelector("meta[name='channel_token']").content
+let socket = new Socket("/socket", {params: {channel_token: channel_token}})
 socket.connect()
 
-// Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("topic:subtopic", {})
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
+let group = window.document.querySelector("meta[name='group']")
+let statistic = window.document.querySelector("meta[name='statistic']")
+if (group) {
+  var total_members = 0
+  var members = []
+
+  let channel = socket.channel("group:" + group.content, {})
+  channel.join()
+    .receive("ok", resp => { console.log("Joined successfully", resp) })
+    .receive("error", resp => { console.log("Unable to join", resp) })
+
+  channel.on("total_members", payload => {
+    console.log(payload)
+    total_members = payload.total_members
+  })
+
+  let updateProgressBar = () => {
+    var value = members.length * 100 / total_members
+    var progressBar = window.document.querySelector("div.progress-bar")
+    progressBar.setAttribute("aria-valuenow", value.toString());
+    progressBar.innerHTML = value.toString() + "%"
+    progressBar.style.width = value.toString() + "%"
+  }
+
+  let addRow = (statsRow) => {
+    var table = window.document.getElementById("statisticsTable")
+    var row = table.insertRow(1)
+    var cell1 = row.insertCell(0)
+    var cell2 = row.insertCell(1)
+    cell1.innerHTML = statsRow[0]
+    cell2.innerHTML = statsRow[1]
+  }
+
+  let updateGroupStatistics = () => {
+    var statistics = members
+    .map(m => m.memberships || {})
+    .map(m => (m.member || []).concat(m.organizer || []))
+    .reduce(( acc, cur ) => acc.concat(cur), [])
+    .map(g => g.group.name)
+    .reduce((allNames, name) => {
+      if (name in allNames) {
+        allNames[name]++;
+      }
+      else {
+        allNames[name] = 1;
+      }
+      return allNames
+    }, {})
+
+    statistics = Object.keys(statistics)
+      .map(key => [key, statistics[key]])
+      .sort((a, b) => a[1] - b[1])
+
+    statistics.forEach(addRow);
+  }
+
+  let updateTopicStatistics = () => {
+    var statistics = members
+    .map(m => m.topics || {})
+    .reduce(( acc, cur ) => acc.concat(cur), [])
+    .map(t => t.name)
+    .reduce((allNames, name) => {
+      if (name in allNames) {
+        allNames[name]++;
+      }
+      else {
+        allNames[name] = 1;
+      }
+      return allNames
+    }, {})
+
+    statistics = Object.keys(statistics)
+      .map(key => [key, statistics[key]])
+      .sort((a, b) => a[1] - b[1])
+
+    statistics.forEach(addRow);
+  }
+
+  let updateOrganizerStatistics = () => {
+    var statistics = members
+    .map(m => m.memberships || {})
+    .filter(m => (m.organizer || []).length > 0)
+    .length
+
+    statistics = [["organizer", statistics], ["total", total_members]]
+
+    statistics.forEach(addRow);
+  }
+
+  let updateStatistics = () => {
+    if (members.length < total_members) { return }
+
+    if (statistic.content === "groups") {
+      updateGroupStatistics()
+    } else if (statistic.content === "topics") {
+      updateTopicStatistics()
+    } else if (statistic.content === "organizers") {
+      updateOrganizerStatistics()
+    }
+  }
+
+  channel.on("member", payload => {
+    members.push(payload.member)
+    updateProgressBar()
+    updateStatistics()
+  })
+}
 
 export default socket

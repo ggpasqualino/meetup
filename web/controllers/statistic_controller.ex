@@ -12,44 +12,14 @@ defmodule Meetup.StatisticController do
   end
 
   def topics(conn, %{"group" => group}) do
-    token = conn.assigns.access_token.access_token
-
-    member_topics =
-      group
-      |> group_members(token)
-      |> Statistics.topics_histogram
-      |> Enum.sort_by(fn {_k, v} -> v end, &>=/2)
-
-    render(conn, "topics.html", topics: member_topics)
+    render(conn, "statistics.html", title: "Topics", group: group, statistic: "topics")
   end
 
   def organizers(conn, %{"group" => group}) do
-    token = conn.assigns.access_token.access_token
-
-    organizer_members =
-      group
-      |> group_members(token)
-      |> Statistics.organizers
-
-    render(conn, "organizers.html", organizers: organizer_members)
+    render(conn, "statistics.html", title: "Organizers", group: group, statistic: "organizers")
   end
 
   def groups(conn, %{"group" => group}) do
-    token = conn.assigns.access_token.access_token
-
-    member_groups =
-      group
-      |> group_members(token)
-      |> Statistics.groups_histogram
-      |> Enum.sort_by(fn {_k, v} -> v end, &>=/2)
-
-    render(conn, "groups.html", groups: member_groups)
-  end
-
-  defp group_members(group, token) do
-    group
-      |> Profile.all(token)
-      |> Enum.map(fn(%{"id" => id}) -> Profile.one(id, token) end)
-      |> Enum.map(fn {:ok, %{result: result}} -> result end)
+    render(conn, "statistics.html", title: "Groups", group: group, statistic: "groups")
   end
 end
