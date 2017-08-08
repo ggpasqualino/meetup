@@ -104,6 +104,12 @@ function initGroupChannel(socket) {
       updateProgressBar(members, total_members)
       updateStatistics(statistic, members, total_members)
     })
+
+    channel.on("members", payload => {
+      members = members.concat(payload.members)
+      updateProgressBar(members, total_members)
+      updateStatistics(statistic, members, total_members)
+    })
   }
 }
 
