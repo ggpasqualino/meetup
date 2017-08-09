@@ -87,7 +87,7 @@ function initGroupChannel(socket) {
   let group = window.document.querySelector("meta[name='group']")
   if (group) {
     let statistic = window.document.querySelector("meta[name='statistic']").content
-    var total_members = 0
+    var total_members = 1
     var members = []
 
     let channel = socket.channel("group:" + group.content, {})
