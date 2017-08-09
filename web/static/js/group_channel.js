@@ -85,8 +85,8 @@ function addRow(statsRow) {
 
 function initGroupChannel(socket) {
   let group = window.document.querySelector("meta[name='group']")
-  let statistic = window.document.querySelector("meta[name='statistic']").content
   if (group) {
+    let statistic = window.document.querySelector("meta[name='statistic']").content
     var total_members = 0
     var members = []
 
