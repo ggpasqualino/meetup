@@ -10,6 +10,7 @@ defmodule Meetup do
       # Start the endpoint when the application starts
       supervisor(Meetup.Endpoint, []),
       supervisor(MeetupApi.Supervisor, []),
+      supervisor(Meetup.ChannelClient.Supervisor, []),
       worker(MeetupApi.V3.RequestCache, [])
     ]
 
