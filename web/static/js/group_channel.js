@@ -92,8 +92,11 @@ function initGroupChannel(socket) {
 
     let channel = socket.channel("group:" + group.content, {})
     channel.join()
-      .receive("ok", resp => { console.log("Joined successfully", resp) })
-      .receive("error", resp => { console.log("Unable to join", resp) })
+      .receive("ok", resp => {
+        console.log("Joined successfully", resp)
+        members = []
+        updateProgressBar(members, total_members)
+      }).receive("error", resp => { console.log("Unable to join", resp) })
 
     channel.on("total_members", payload => {
       total_members = payload.total_members
