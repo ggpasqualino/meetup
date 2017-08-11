@@ -1,5 +1,5 @@
 <h2>Organizers</h2>
-<p>The members of the group "<%= @group %>" which organize any meetup group</p>
+<p>The members of the group <%= link(@group, to: "https://meetup.com/#{@group}") %> which organize any meetup group</p>
 
 <%= tag(:meta, name: "group", content: @group) %>
 <%= tag(:meta, name: "statistic", content: @statistic) %>

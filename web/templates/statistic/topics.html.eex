@@ -1,5 +1,5 @@
 <h2>Topics</h2>
-<p>The topics of interest of the members of the group "<%= @group %>"</p>
+<p>The topics of interest of the members of the group <%= link(@group, to: "https://meetup.com/#{@group}") %></p>
 
 <%= tag(:meta, name: "group", content: @group) %>
 <%= tag(:meta, name: "statistic", content: @statistic) %>
