@@ -39,7 +39,8 @@ defmodule Meetup.Mixfile do
      {:httpoison, "~> 0.12.0"},
      {:credo, "~> 0.4", only: :dev},
      {:oauth2, "~> 0.9"},
-     {:gproc, "~> 0.6.1"}]
+     {:gproc, "~> 0.6.1"},
+     {:distillery, "~> 1.4.0"}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.

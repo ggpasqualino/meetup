@@ -24,12 +24,12 @@ config :phoenix, :generators,
   binary_id: false
 
 config :meetup, :oauth,
-  client_id: System.get_env("MEETUP_CLIENT_ID"),
-  client_secret: System.get_env("MEETUP_CLIENT_SECRET"),
-  redirect_uri: System.get_env("MEETUP_REDIRECT_URI")
+  client_id: "${MEETUP_CLIENT_ID}",
+  client_secret: "${MEETUP_CLIENT_SECRET}",
+  redirect_uri: "${MEETUP_REDIRECT_URI}"
 
 config :meetup,
-  api_key: System.get_env("MEETUP_API_KEY"),
+  api_key: "${MEETUP_API_KEY}",
   user_expiration_time: 3600
 
 # Import environment specific config. This must remain at the bottom

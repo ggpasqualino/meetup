@@ -1,0 +1,14 @@
+_build
+deps
+Dockerfile*
+.dockerignore
+docker-compose*
+elixir_buildpack.config
+.git
+.gitignore
+LICENSE
+node_modules
+npm-debug.log
+README.md
+.travis.yml
+.vscode
