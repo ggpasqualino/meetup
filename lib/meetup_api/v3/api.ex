@@ -1,10 +1,7 @@
 defmodule MeetupApi.V3.Api do
   alias MeetupApi.V3.Request
 
-  @key Application.get_env(:meetup, :api_key)
   @endpoint "https://api.meetup.com"
-
-  def key, do: @key
 
   def endpoint, do: @endpoint
 

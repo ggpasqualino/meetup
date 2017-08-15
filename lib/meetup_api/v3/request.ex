@@ -1,8 +1,8 @@
 defmodule MeetupApi.V3.Request do
-  alias MeetupApi.V3.{Api, Request}
+  alias MeetupApi.V3.Request
 
   defmodule Params do
-    defstruct [:page, :offset, :fields, :only, :omit, :key, :access_token]
+    defstruct [:page, :offset, :fields, :only, :omit, :access_token]
   end
 
   defstruct [:path, :user, :params]
@@ -36,13 +36,8 @@ defmodule MeetupApi.V3.Request do
     %Request{request | params: new_params}
   end
 
-  def add_authentication(%Request{params: params} = request, nil) do
-    new_params = %Params{params | key: Api.key, access_token: nil}
-    %Request{request | params: new_params}
-  end
-
   def add_authentication(%Request{params: params} = request, access_token) do
-    new_params = %Params{params | access_token: access_token, key: nil}
+    new_params = %Params{params | access_token: access_token}
     %Request{request | params: new_params}
   end
 

@@ -10,7 +10,7 @@ defmodule MeetupApi.V3.Profile do
 
     all_request = fn  ->
       path
-      |> Request.new(access_token || Api.key)
+      |> Request.new(access_token)
       |> add_offset(0)
       |> add_page(200)
       |> add_only("id")
@@ -39,7 +39,7 @@ defmodule MeetupApi.V3.Profile do
 
     request =
       "/members/#{member_id}"
-      |> Request.new(access_token || Api.key)
+      |> Request.new(access_token)
       |> add_fields(Enum.join(extra_fields, ","))
       |> add_authentication(access_token)
 

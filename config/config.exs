@@ -29,7 +29,6 @@ config :meetup, :oauth,
   redirect_uri: "${MEETUP_REDIRECT_URI}"
 
 config :meetup,
-  api_key: "${MEETUP_API_KEY}",
   user_expiration_time: 3600
 
 # Import environment specific config. This must remain at the bottom
